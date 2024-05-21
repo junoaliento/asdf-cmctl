@@ -27,7 +27,17 @@ function install_cmctl() {
       ;;
   esac
 
-  local download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cmctl-${kernel}-${architecture}.tar.gz"
+  # In version v1.14.5, v1.13.6 and v1.12.10, the archive file name has been changed from cmctl-*-*.tar.gz to cert-manager-cmctl-*-*.tar.gz
+  local download_url
+  if is_greater "$version" "1.14.5"; then
+    download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cert-manager-cmctl-${kernel}-${architecture}.tar.gz"
+  elif is_greater "$version" "1.13.6" && ! is_greater "$version" "1.14.0"; then
+    download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cert-manager-cmctl-${kernel}-${architecture}.tar.gz"
+  elif is_greater "$version" "1.12.10" && ! is_greater "$version" "1.13.0"; then
+    download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cert-manager-cmctl-${kernel}-${architecture}.tar.gz"
+  else
+    download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cmctl-${kernel}-${architecture}.tar.gz"
+  fi
 
   echo "Downloading cmctl from ${download_url}"
 
