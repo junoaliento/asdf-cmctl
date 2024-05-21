@@ -29,7 +29,9 @@ function install_cmctl() {
 
   # In version v1.14.5, v1.13.6 and v1.12.10, the archive file name has been changed from cmctl-*-*.tar.gz to cert-manager-cmctl-*-*.tar.gz
   local download_url
-  if is_greater "$version" "1.14.5"; then
+  if is_greater "$version" "2.0.0"; then
+    download_url="https://github.com/cert-manager/cmctl/releases/download/v${version}/cmctl_${kernel}_${architecture}"
+  elif is_greater "$version" "1.14.5" && ! is_greater "$version" "2.0.0"; then
     download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cert-manager-cmctl-${kernel}-${architecture}.tar.gz"
   elif is_greater "$version" "1.13.6" && ! is_greater "$version" "1.14.0"; then
     download_url="https://github.com/cert-manager/cert-manager/releases/download/v${version}/cert-manager-cmctl-${kernel}-${architecture}.tar.gz"
@@ -43,15 +45,19 @@ function install_cmctl() {
 
   local tempdir="${TMPDIR:-"$(mktemp -d)"}"
 
-  local target_file="$file"
-  # In versions 1.8.x, the location of cmctl in the archive file has been changed.
-  # cmctl -> ./cmctl
-  # In versions 1.9.x and greater the original path has been restored.
-  if is_greater "$version" "1.7.99" && ! is_greater "$version" "1.8.99"; then
-    target_file="./$file"
-  fi
+  if is_greater "$version" "2.0.0"; then
+    curl -sL "$download_url" -o "${tempdir}/${file}"
+  else
+    local target_file="$file"
+    # In versions 1.8.x, the location of cmctl in the archive file has been changed.
+    # cmctl -> ./cmctl
+    # In versions 1.9.x and greater the original path has been restored.
+    if is_greater "$version" "1.7.99" && ! is_greater "$version" "1.8.99"; then
+      target_file="./$file"
+    fi
 
-  curl -sL "$download_url" | tar xz -C "$tempdir" "$target_file"
+    curl -sL "$download_url" | tar xz -C "$tempdir" "$target_file"
+  fi
 
   mkdir -p "$bin_install_path"
   mv "${tempdir}/${file}" "$bin_path"

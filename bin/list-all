@@ -6,12 +6,23 @@ SCRIPT_ROOT="$(cd "$(dirname "$0")"; pwd)"
 # shellcheck source=lib/utils.sh
 source "${SCRIPT_ROOT}/../lib/utils.sh"
 
-function list_all() {
+function list_all_v1() {
   for version in $(git ls-remote --tags --refs https://github.com/cert-manager/cert-manager.git | grep -o 'refs/tags/.*' | cut -d/ -f3- | sed 's/^v//'); do
     # cmctl is provided since cert-manager v1.6.0.
     # https://cert-manager.io/docs/release-notes/release-notes-1.6/
     ! is_greater "1.5.99" "$version" && echo "$version"
   done
+}
+
+function list_all_v2() {
+  for version in $(git ls-remote --tags --refs https://github.com/cert-manager/cmctl.git | grep -o 'refs/tags/.*' | cut -d/ -f3- | sed 's/^v//'); do
+    echo "$version"
+  done
+}
+
+function list_all() {
+  list_all_v1
+  list_all_v2
 }
 
 list_all | sort_versions | xargs echo
