@@ -1,6 +1,6 @@
 # asdf-cmctl
 
-![CI](https://github.com/asdf-community/asdf-cmctl/workflows/CI/badge.svg)
+![CI](https://github.com/junoaliento/asdf-cmctl/workflows/CI/badge.svg)
 
 [cmctl](https://cert-manager.io/docs/usage/cmctl/) plugin for the [asdf](https://github.com/asdf-vm/asdf) version manager.
 
