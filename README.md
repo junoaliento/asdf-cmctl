@@ -11,7 +11,7 @@ cmctl is a CLI tool that can help you to manage cert-manager resources inside yo
 ## Install
 
 ```
-asdf plugin-add cmctl https://github.com/asdf-community/asdf-cmctl.git
+asdf plugin-add cmctl https://github.com/junoaliento/asdf-cmctl.git
 ```
 
 See https://asdf-vm.com/ for more detail on asdf-vm.
