@@ -6,7 +6,14 @@
 
 cmctl is a CLI tool that can help you to manage cert-manager resources inside your cluster.
 
+Version 1:
+
 - https://github.com/cert-manager/cert-manager
+
+Version 2:
+
+- https://github.com/cert-manager/cmctl
+
 
 ## Install
 
